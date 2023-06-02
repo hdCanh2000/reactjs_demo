@@ -1,20 +1,36 @@
 // import { Table } from "antd";
 import { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
+import ReactPaginate from "react-paginate";
 import { getAllUser } from "../services/UserService";
+import ModalAddNewUser from "./ModalAddNewUser";
+import { Button } from "react-bootstrap";
 
 const TableUser = (props) => {
   const [listUser, setListUser] = useState([]);
+  const [show, setShow] = useState(false);
+  const [totalUser, setTotalUser] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
 
   useEffect(() => {
     getUser();
   }, []);
 
-  const getUser = async () => {
-    const response = await getAllUser();
+  const handleUpdateTable = (user) => {
+    setListUser([user, ...listUser]);
+  };
+
+  const getUser = async (page) => {
+    const response = await getAllUser(page);
     if (response && response.data) {
+      setTotalUser(response.total);
+      setTotalPage(response.total_pages);
       setListUser(response.data);
     }
+  };
+
+  const handlePageClick = (event) => {
+    getUser(+event.selected + 1);
   };
 
   //   const columns = [
@@ -60,6 +76,18 @@ const TableUser = (props) => {
   //   };
   return (
     <>
+      <div className="my-3 d-flex justify-content-between">
+        <h3>List User:</h3>
+        <Button
+          className=""
+          variant="outline-primary"
+          onClick={() => {
+            setShow(!show);
+          }}
+        >
+          Add new user
+        </Button>
+      </div>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -84,6 +112,29 @@ const TableUser = (props) => {
             })}
         </tbody>
       </Table>
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel="Next >>>"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        pageCount={totalPage}
+        previousLabel="<<< Previous"
+        pageClassName="page-item"
+        pageLinkClassName="page-link"
+        previousClassName="page-item"
+        previousLinkClassName="page-link"
+        nextClassName="page-item"
+        nextLinkClassName="page-link"
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+        containerClassName="pagination"
+        activeClassName="active"
+      />
+      <ModalAddNewUser
+        show={show}
+        hide={() => setShow(!show)}
+        handleUpdateTable={handleUpdateTable}
+      />
       {/* <Table columns={columns} dataSource={data} onChange={onChange} />; */}
     </>
   );

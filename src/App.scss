@@ -13,13 +13,18 @@ code {
 }
 
 .App-container {
-  text-align: center;
+  // text-align: center;
+  .App-header {
+    text-align: center;
+  }
+  
+  .App-logo {
+    height: 15vmin;
+    pointer-events: none;
+  }
+
 }
 
-.App-logo {
-  height: 15vmin;
-  pointer-events: none;
-}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

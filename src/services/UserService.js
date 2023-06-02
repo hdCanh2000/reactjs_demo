@@ -1,7 +1,11 @@
 import AxiosClient from "./axios";
 
-const getAllUser = () => {
-  return AxiosClient.get("/users?page=1");
+const getAllUser = (page) => {
+  return AxiosClient.get(`/api/users?page=${page}`);
 };
 
-export { getAllUser };
+const postNewUser = (data) => {
+  return AxiosClient.post(`/api/users`, data);
+};
+
+export { getAllUser, postNewUser };

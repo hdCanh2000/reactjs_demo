@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const AxiosClient = axios.create({
-  baseURL: "https://reqres.in/api",
-  timeout: 1000,
+  baseURL: "https://reqres.in",
 });
 
 // Thêm một bộ đón chặn response
