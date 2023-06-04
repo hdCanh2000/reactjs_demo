@@ -5,7 +5,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 function Header(props) {
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="success" variant="dark" expand="lg">
       <Container>
         <Navbar.Brand href="#home">React-Hook</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

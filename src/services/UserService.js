@@ -8,4 +8,12 @@ const postNewUser = (data) => {
   return AxiosClient.post(`/api/users`, data);
 };
 
-export { getAllUser, postNewUser };
+const putUser = (data) => {
+  return AxiosClient.put(`/api/users/2`, data);
+};
+
+const deleteUser = (id) => {
+  return AxiosClient.delete(`/api/users/${id}`);
+};
+
+export { getAllUser, postNewUser, putUser, deleteUser };

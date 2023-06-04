@@ -3,8 +3,8 @@ import "./App.scss";
 import Container from "react-bootstrap/Container";
 import Header from "./component/Header";
 import TableUser from "./component/TableUser";
-import { Button } from "react-bootstrap";
-import { ToastContainer, toast } from "react-toastify";
+// import { Button } from "react-bootstrap";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {

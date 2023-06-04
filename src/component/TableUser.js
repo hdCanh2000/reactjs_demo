@@ -1,23 +1,45 @@
 // import { Table } from "antd";
 import { useEffect, useState } from "react";
+import _ from "lodash";
 import Table from "react-bootstrap/Table";
 import ReactPaginate from "react-paginate";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { getAllUser } from "../services/UserService";
-import ModalAddNewUser from "./ModalAddNewUser";
+import ModalAddNewUser from "./ModalUser";
 import { Button } from "react-bootstrap";
+import ModalDelete from "./ModalDelete";
 
 const TableUser = (props) => {
   const [listUser, setListUser] = useState([]);
+  const [statusForm, setStatusForm] = useState("");
   const [show, setShow] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
   const [totalUser, setTotalUser] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
+  const [dataUserEdit, setDataUserEdit] = useState({});
+  const [dataUserDelete, setDataUserDelete] = useState({});
 
   useEffect(() => {
     getUser();
   }, []);
 
-  const handleUpdateTable = (user) => {
+  const handleAddNewUser = (user) => {
     setListUser([user, ...listUser]);
+  };
+
+  const handleUpdateUser = (user) => {
+    let copyListUser = _.cloneDeep(listUser);
+    let index = _.findIndex(listUser, (item) => item.id === user.id);
+    copyListUser[index].first_name = user.first_name;
+    copyListUser[index].email = user.email;
+    setListUser(copyListUser);
+  };
+
+  const handleDeleteUser = (user) => {
+    setDataUserDelete(user);
+    let copyListUser = _.cloneDeep(listUser);
+    copyListUser = _.filter(copyListUser, (item) => item.id !== user.id);
+    setListUser(copyListUser);
   };
 
   const getUser = async (page) => {
@@ -83,6 +105,7 @@ const TableUser = (props) => {
           variant="outline-primary"
           onClick={() => {
             setShow(!show);
+            setStatusForm("add");
           }}
         >
           Add new user
@@ -91,10 +114,11 @@ const TableUser = (props) => {
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>STT</th>
+            <th>ID</th>
             <th>Mail</th>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>Name</th>
+            {/* <th>Last Name</th> */}
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -106,7 +130,32 @@ const TableUser = (props) => {
                   <td>{user.id}</td>
                   <td>{user.email}</td>
                   <td>{user.first_name}</td>
-                  <td>@{user.last_name}</td>
+                  {/* <td>{user.last_name}</td> */}
+                  <td>
+                    <Button
+                      className="mx-1"
+                      variant="outline-warning"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDataUserEdit(user);
+                        setShow(!show);
+                        setStatusForm("edit");
+                      }}
+                    >
+                      <EditOutlined style={{ fontSize: "18px" }} />
+                    </Button>
+                    <Button
+                      className="mx-1"
+                      variant="outline-danger"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDataUserDelete(user);
+                        setShowDelete(!showDelete);
+                      }}
+                    >
+                      <DeleteOutlined style={{ fontSize: "18px" }} />
+                    </Button>
+                  </td>
                 </tr>
               );
             })}
@@ -133,7 +182,16 @@ const TableUser = (props) => {
       <ModalAddNewUser
         show={show}
         hide={() => setShow(!show)}
-        handleUpdateTable={handleUpdateTable}
+        handleAddNewUser={handleAddNewUser}
+        handleUpdateUser={handleUpdateUser}
+        statusForm={statusForm}
+        dataUserEdit={dataUserEdit}
+      />
+      <ModalDelete
+        show={showDelete}
+        hide={() => setShowDelete(!showDelete)}
+        handleDeleteUser={handleDeleteUser}
+        dataUserDelete={dataUserDelete}
       />
       {/* <Table columns={columns} dataSource={data} onChange={onChange} />; */}
     </>
