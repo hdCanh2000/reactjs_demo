@@ -8,6 +8,7 @@ import { getAllUser } from "../services/UserService";
 import ModalAddNewUser from "./ModalUser";
 import { Button } from "react-bootstrap";
 import ModalDelete from "./ModalDelete";
+import { Input } from "antd";
 
 const TableUser = (props) => {
   const [listUser, setListUser] = useState([]);
@@ -18,6 +19,7 @@ const TableUser = (props) => {
   const [totalPage, setTotalPage] = useState(0);
   const [dataUserEdit, setDataUserEdit] = useState({});
   const [dataUserDelete, setDataUserDelete] = useState({});
+  // const [keySearch, setKeySearch] = useState("");
 
   useEffect(() => {
     getUser();
@@ -41,6 +43,20 @@ const TableUser = (props) => {
     copyListUser = _.filter(copyListUser, (item) => item.id !== user.id);
     setListUser(copyListUser);
   };
+
+  //debounce: dùng để hạn chế call API quá nhiều lần trong cùng 1 thời điểm mà có thể set time
+  const handleSearch = _.debounce((e) => {
+    let keySearch = e.target.value;
+    if (keySearch) {
+      let copyListUser = _.cloneDeep(listUser);
+      copyListUser = _.filter(copyListUser, (item) =>
+        item.email.includes(keySearch)
+      );
+      setListUser(copyListUser);
+    } else {
+      getUser();
+    }
+  }, 500);
 
   const getUser = async (page) => {
     const response = await getAllUser(page);
@@ -98,25 +114,33 @@ const TableUser = (props) => {
   //   };
   return (
     <>
-      <div className="my-3 d-flex justify-content-between">
-        <h3>List User:</h3>
-        <Button
-          className=""
-          variant="outline-primary"
-          onClick={() => {
-            setShow(!show);
-            setStatusForm("add");
-          }}
-        >
-          Add new user
-        </Button>
+      <div>
+        <h3 className="my-3">List User:</h3>
+        <div className="my-3 d-flex justify-content-between">
+          <Input
+            className="col-4"
+            placeholder="Search by UserName..."
+            // value={keySearch}
+            onChange={(e) => handleSearch(e)}
+          />
+          <Button
+            className=""
+            variant="outline-primary"
+            onClick={() => {
+              setShow(!show);
+              setStatusForm("add");
+            }}
+          >
+            Add new user
+          </Button>
+        </div>
       </div>
       <Table striped bordered hover>
         <thead>
           <tr>
             <th>ID</th>
             <th>Mail</th>
-            <th>Name</th>
+            <th>User Name</th>
             {/* <th>Last Name</th> */}
             <th>Actions</th>
           </tr>
