@@ -3,12 +3,15 @@ import { useEffect, useState } from "react";
 import _ from "lodash";
 import Table from "react-bootstrap/Table";
 import ReactPaginate from "react-paginate";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { getAllUser } from "../services/UserService";
 import ModalAddNewUser from "./ModalUser";
 import { Button } from "react-bootstrap";
 import ModalDelete from "./ModalDelete";
 import { Input } from "antd";
+import "@fortawesome/fontawesome-free/css/all.css";
+import { CSVLink } from "react-csv";
+import Papa from "papaparse";
+import { toast } from "react-toastify";
 
 const TableUser = (props) => {
   const [listUser, setListUser] = useState([]);
@@ -19,7 +22,7 @@ const TableUser = (props) => {
   const [totalPage, setTotalPage] = useState(0);
   const [dataUserEdit, setDataUserEdit] = useState({});
   const [dataUserDelete, setDataUserDelete] = useState({});
-  // const [keySearch, setKeySearch] = useState("");
+  const [dataExport, setDataExport] = useState([]);
 
   useEffect(() => {
     getUser();
@@ -71,6 +74,68 @@ const TableUser = (props) => {
     getUser(+event.selected + 1);
   };
 
+  const getUserExport = (event, done) => {
+    let exportData = [];
+    if (listUser && listUser.length > 0) {
+      exportData.push(["ID", "Email", "User Name"]);
+      _.map(listUser, (item, index) => {
+        let exportItem = [];
+        exportItem[0] = item.id;
+        exportItem[1] = item.email;
+        exportItem[2] = item.first_name;
+        exportData.push(exportItem);
+      });
+      setDataExport(exportData);
+      done();
+    }
+  };
+
+  const handleImportFileCSV = (e) => {
+    if (e.target && e.target.files && e.target.files[0]) {
+      let file = e.target.files[0];
+      if (file.type !== "text/csv") {
+        toast.error("Only upload file CSV");
+        return;
+      }
+      // Parse local CSV file
+      Papa.parse(file, {
+        // Header dùng để lấy các item đầu tiên làm header cho bảng
+        // header: true,
+        complete: (results) => {
+          let CSV = results.data;
+          if (CSV.length > 0) {
+            if (CSV[0] && CSV[0].length === 3) {
+              if (
+                CSV[0][0] !== "ID" &&
+                CSV[0][1] !== "Email" &&
+                CSV[0][2] !== "User Name"
+              ) {
+                toast.error("Wrong format header CSV file!");
+              } else {
+                let dataCSV = [];
+                _.map(CSV, (item, index) => {
+                  if (index > 0 && item.length === 3) {
+                    let obj = {};
+                    obj.id = item[0];
+                    obj.email = item[1];
+                    obj.first_name = item[2];
+                    dataCSV.push(obj);
+                  }
+                  setListUser(dataCSV);
+                  console.log("Finished:", results.data, dataCSV);
+                });
+              }
+            } else {
+              toast.error("Wrong format CSV file!");
+            }
+          } else {
+            toast.error("Not found data on CSV file!");
+          }
+        },
+      });
+    }
+  };
+
   //   const columns = [
   //     {
   //         title: "STT",
@@ -114,15 +179,15 @@ const TableUser = (props) => {
   //   };
   return (
     <>
-      <div>
-        <h3 className="my-3">List User:</h3>
-        <div className="my-3 d-flex justify-content-between">
-          <Input
-            className="col-4"
-            placeholder="Search by UserName..."
-            // value={keySearch}
-            onChange={(e) => handleSearch(e)}
-          />
+      <h3 className="my-3">List User:</h3>
+      <div className="my-3 d-flex justify-content-between">
+        <Input
+          className="col-4"
+          placeholder="Search by UserName..."
+          // value={keySearch}
+          onChange={(e) => handleSearch(e)}
+        />
+        <div className="btn-gr">
           <Button
             className=""
             variant="outline-primary"
@@ -131,10 +196,37 @@ const TableUser = (props) => {
               setStatusForm("add");
             }}
           >
-            Add new user
+            <i className="fa-solid fa-circle-plus"></i> Add New
           </Button>
+          <label
+            className="mx-2 btn btn-outline-success"
+            variant="outline-success"
+            htmlFor="import"
+          >
+            <i className="fa-solid fa-file-import"></i> Import
+          </label>
+          <input
+            id="import"
+            type="file"
+            hidden
+            onChange={(e) => {
+              handleImportFileCSV(e);
+            }}
+          />
+          <CSVLink
+            data={dataExport}
+            filename="DataTest.csv"
+            target="_blank"
+            asyncOnClick={true}
+            onClick={(event, done) => getUserExport(event, done)}
+          >
+            <Button className="" variant="outline-warning">
+              <i className="fa-solid fa-file-export"></i> Export
+            </Button>
+          </CSVLink>
         </div>
       </div>
+
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -166,7 +258,7 @@ const TableUser = (props) => {
                         setStatusForm("edit");
                       }}
                     >
-                      <EditOutlined style={{ fontSize: "18px" }} />
+                      <i className="fa-solid fa-pen-to-square"></i>
                     </Button>
                     <Button
                       className="mx-1"
@@ -177,7 +269,7 @@ const TableUser = (props) => {
                         setShowDelete(!showDelete);
                       }}
                     >
-                      <DeleteOutlined style={{ fontSize: "18px" }} />
+                      <i className="fa-solid fa-trash"></i>
                     </Button>
                   </td>
                 </tr>

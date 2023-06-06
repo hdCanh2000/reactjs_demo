@@ -92,7 +92,7 @@ const ModalUser = (props) => {
                 </Form.Text> */}
               </Form.Group>
 
-              <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Group className="mb-3" controlId="formBasicPassword" hidden>
                 <Form.Label>Email</Form.Label>
                 <Form.Control
                   type="text"
