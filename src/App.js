@@ -3,10 +3,11 @@ import { ToastContainer } from "react-toastify";
 import "./App.scss";
 import Container from "react-bootstrap/Container";
 import Header from "./page/home/Header";
-import Home from "./page/home/Home";
-import Login from "./page/login/Login";
-import TableUser from "./page/users/TableUser";
+// import Home from "./page/home/Home";
+// import Login from "./page/login/Login";
+// import TableUser from "./page/users/TableUser";
 import "react-toastify/dist/ReactToastify.css";
+import AppRouter from "./routers/AppRouter";
 
 function App() {
   return (
@@ -14,11 +15,7 @@ function App() {
       <div className="App-container">
         <Header />
         <Container>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/users" element={<TableUser />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
+          <AppRouter />
         </Container>
       </div>
       <ToastContainer

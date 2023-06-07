@@ -180,14 +180,14 @@ const TableUser = (props) => {
   return (
     <>
       <h3 className="my-3">List User:</h3>
-      <div className="my-3 d-flex justify-content-between">
+      <div className="header-user my-3 d-flex">
         <Input
-          className="col-4"
+          className="col-12 col-sm-4"
           placeholder="Search by UserName..."
           // value={keySearch}
           onChange={(e) => handleSearch(e)}
         />
-        <div className="btn-gr">
+        <div className="btn-gr d-flex">
           <Button
             className=""
             variant="outline-primary"
@@ -198,21 +198,23 @@ const TableUser = (props) => {
           >
             <i className="fa-solid fa-circle-plus"></i> Add New
           </Button>
-          <label
-            className="mx-2 btn btn-outline-success"
-            variant="outline-success"
-            htmlFor="import"
-          >
-            <i className="fa-solid fa-file-import"></i> Import
-          </label>
-          <input
-            id="import"
-            type="file"
-            hidden
-            onChange={(e) => {
-              handleImportFileCSV(e);
-            }}
-          />
+          <div>
+            <label
+              className="mx-2 btn btn-outline-success"
+              variant="outline-success"
+              htmlFor="import"
+            >
+              <i className="fa-solid fa-file-import"></i> Import
+            </label>
+            <input
+              id="import"
+              type="file"
+              hidden
+              onChange={(e) => {
+                handleImportFileCSV(e);
+              }}
+            />
+          </div>
           <CSVLink
             data={dataExport}
             filename="DataTest.csv"
@@ -227,56 +229,59 @@ const TableUser = (props) => {
         </div>
       </div>
 
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Mail</th>
-            <th>User Name</th>
-            {/* <th>Last Name</th> */}
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {listUser &&
-            listUser.length > 0 &&
-            listUser.map((user, index) => {
-              return (
-                <tr key={`user - ${index}`}>
-                  <td>{user.id}</td>
-                  <td>{user.email}</td>
-                  <td>{user.first_name}</td>
-                  {/* <td>{user.last_name}</td> */}
-                  <td>
-                    <Button
-                      className="mx-1"
-                      variant="outline-warning"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setDataUserEdit(user);
-                        setShow(!show);
-                        setStatusForm("edit");
-                      }}
-                    >
-                      <i className="fa-solid fa-pen-to-square"></i>
-                    </Button>
-                    <Button
-                      className="mx-1"
-                      variant="outline-danger"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setDataUserDelete(user);
-                        setShowDelete(!showDelete);
-                      }}
-                    >
-                      <i className="fa-solid fa-trash"></i>
-                    </Button>
-                  </td>
-                </tr>
-              );
-            })}
-        </tbody>
-      </Table>
+      <div className="table-user">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Mail</th>
+              <th>User Name</th>
+              {/* <th>Last Name</th> */}
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {listUser &&
+              listUser.length > 0 &&
+              listUser.map((user, index) => {
+                return (
+                  <tr key={`user - ${index}`}>
+                    <td>{user.id}</td>
+                    <td>{user.email}</td>
+                    <td>{user.first_name}</td>
+                    {/* <td>{user.last_name}</td> */}
+                    <td>
+                      <Button
+                        className="mx-1"
+                        variant="outline-warning"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDataUserEdit(user);
+                          setShow(!show);
+                          setStatusForm("edit");
+                        }}
+                      >
+                        <i className="fa-solid fa-pen-to-square"></i>
+                      </Button>
+                      <Button
+                        className="mx-1"
+                        variant="outline-danger"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDataUserDelete(user);
+                          setShowDelete(!showDelete);
+                        }}
+                      >
+                        <i className="fa-solid fa-trash"></i>
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              })}
+          </tbody>
+        </Table>
+      </div>
+
       <ReactPaginate
         breakLabel="..."
         nextLabel="Next >>>"

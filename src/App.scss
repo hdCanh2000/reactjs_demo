@@ -81,6 +81,38 @@ code {
       cursor: pointer;
     }
   }
+  .NF404 {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+  }
+  .img-404 {
+    height: 50vh;
+  }
+  .header-user {
+    justify-content: space-between;
+  }
+  .table-user {
+    width: inherit;
+    overflow-x: auto;
+  }
+  .pagination {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .header-user {
+    flex-direction: column;
+    .btn-gr {
+      display: flex;
+      justify-content: space-evenly;
+      margin-top: 10px;
+    }
+    input {
+      padding: 10px;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {

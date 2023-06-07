@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { postLogin } from "../../services/LoginService";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const Login = () => {
 
   const handelLogin = async () => {
     if (email || password) {
-      let dataLogin = { email, password };
+      let dataLogin = { email: email.trim(), password: password.trim() };
       setLoadingLogin(!loadingLogin);
       let response = await postLogin(dataLogin);
       console.log(response);
@@ -39,13 +39,17 @@ const Login = () => {
     setLoadingLogin(false);
   };
 
+  const handlePressEnter = (event) => {
+    if (event.keyCode === 13) {
+      handelLogin();
+    }
+  };
+
   return (
     <>
       <div className="login-container col-12 col-lg-4">
         <div className="title">Log In</div>
-        <div className="text">
-          Email (eve.holt@reqres.in) & Password (API không check pass)
-        </div>
+        <div className="text">Email ( eve.holt@reqres.in )</div>
         <Input
           className="text-input"
           type="text"
@@ -53,6 +57,7 @@ const Login = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+        <div className="text">Password( cityslicka )</div>
         <div className="input-pass">
           <Input
             className="text-input"
@@ -60,6 +65,7 @@ const Login = () => {
             placeholder="Password..."
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => handlePressEnter(e)}
           />
           <i
             className={
@@ -83,12 +89,12 @@ const Login = () => {
           )}
         </Button>
         <div className="btn-go-back">
-          <Button className="btn btn-success">
+          <Link className="btn btn-success" to="/">
             <i className="fa-solid fa-arrow-left"></i> Go Back Home
-          </Button>
-          <Button className="btn btn-success">
+          </Link>
+          {/* <Button className="btn btn-success">
             <i className="fa-solid fa-arrow-right"></i> Go To Register
-          </Button>
+          </Button> */}
         </div>
       </div>
     </>

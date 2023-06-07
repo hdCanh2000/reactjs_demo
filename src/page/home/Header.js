@@ -78,6 +78,9 @@ function Header(props) {
     navigate("/");
     toast.success("Log out success!!!");
   };
+
+  let user = "eve.holt@reqres.in";
+
   // const [current, setCurrent] = useState("mail");
   // const onClick = (e) => {
   //   console.log("click ", e);
@@ -103,20 +106,30 @@ function Header(props) {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto" activeKey={location.pathname}>
             <NavLink className="nav-link" to="/">
-              Home
+              {<i className="fa-solid fa-house"></i>} Home
             </NavLink>
-            <NavLink className="nav-link" to="/users">
-              Manage Users
-            </NavLink>
+            {localStorage.getItem("token") ? (
+              <NavLink className="nav-link" to="/users">
+                {<i className="fa-solid fa-people-roof"></i>} Manage Users
+              </NavLink>
+            ) : null}
           </Nav>
           <Nav>
+            {localStorage.getItem("token") ? (
+              <span className="nav-link">
+                <i className="fa-solid fa-user-secret"></i> {user}
+              </span>
+            ) : null}
             <NavDropdown title="Setting" id="basic-nav-dropdown">
-              <NavLink className="dropdown-item" to="/login">
-                Login
-              </NavLink>
-              <NavDropdown.Item onClick={() => handleLogout()}>
-                Logout
-              </NavDropdown.Item>
+              {localStorage.getItem("token") ? (
+                <NavDropdown.Item onClick={() => handleLogout()}>
+                  {<i className="fa-solid fa-right-from-bracket"></i>} Logout
+                </NavDropdown.Item>
+              ) : (
+                <NavLink className="dropdown-item" to="/login">
+                  {<i className="fa-solid fa-right-to-bracket"></i>} Login
+                </NavLink>
+              )}
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
