@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
-import randomEmail from "random-email";
-import { postNewUser, putUser } from "../services/UserService";
+// import randomEmail from "random-email";
+import { postNewUser, putUser } from "../../services/UserService";
 import { toast } from "react-toastify";
 
 const ModalUser = (props) => {

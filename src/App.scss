@@ -19,15 +19,75 @@ code {
   }
   
   .App-logo {
-    height: 15vmin;
+    height: 12vmin;
     pointer-events: none;
   }
-
+  .App-logo-header {
+    height: 5vmin;
+    pointer-events: none;
+    margin-right: 5px;
+  }
+  .home {
+    margin-top: 20px;
+  }
+  .text-home {
+    font-size: 20px;
+  }
+  li {
+    list-style-type: none;
+  }
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    .title {
+      text-align: center;
+      font-size: 30px;
+      font-weight: 700;
+      padding: 25px;
+    }
+    .text {
+      font-weight: 600;
+      padding-bottom: 3px;
+    }
+    .text-input {
+      padding: 10px;
+      margin: 8px 0;
+      &:hover {
+        background-color: #f2fffd;
+      }
+    }
+    .btn-login {
+      margin: 8px 0;
+      padding: 8px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    // button[disabled=disabled], button:disabled {
+    //   cursor: not-allowed;
+    // }
+    .btn-go-back {
+      margin-top: 50px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .input-pass {
+      position: relative;
+    }
+    .fa-eye, .fa-eye-slash {
+      position: absolute;
+      right: 10px;
+      top: 22px;
+      cursor: pointer;
+    }
+  }
 }
-
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+  .App-logo-header {
     animation: App-logo-spin infinite 20s linear;
   }
 }

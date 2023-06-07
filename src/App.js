@@ -1,22 +1,24 @@
-import logo from "./logo.svg";
+import { Routes, Route, Link } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import "./App.scss";
 import Container from "react-bootstrap/Container";
-import Header from "./component/Header";
-import TableUser from "./component/TableUser";
-// import { Button } from "react-bootstrap";
-import { ToastContainer } from "react-toastify";
+import Header from "./page/home/Header";
+import Home from "./page/home/Home";
+import Login from "./page/login/Login";
+import TableUser from "./page/users/TableUser";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <>
       <div className="App-container">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-        </header>
         <Header />
         <Container>
-          <TableUser />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/users" element={<TableUser />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
         </Container>
       </div>
       <ToastContainer

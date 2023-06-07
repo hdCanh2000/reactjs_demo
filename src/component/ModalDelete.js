@@ -26,8 +26,8 @@ const ModalDelete = (props) => {
         </Modal.Header>
         <Modal.Body>
           <div className="body-add-new">
-            <h5>Xác nhận xóa User: {dataUserDelete.first_name} ?</h5>
-            <h6>Email User: {dataUserDelete.email}</h6>
+            <h5>Xác nhận xóa: {dataUserDelete.first_name} ?</h5>
+            <h6>Infor: {dataUserDelete.email}</h6>
           </div>
         </Modal.Body>
         <Modal.Footer>
